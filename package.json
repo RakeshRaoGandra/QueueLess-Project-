@@ -1,0 +1,16 @@
+{
+  "name": "hospital-queue-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hospital Queue Management System (Pure React & Node.js)",
+  "scripts": {
+    "start:api": "npm --prefix apps/api start",
+    "start:web": "npm --prefix apps/web run dev",
+    "test:api": "npm --prefix apps/api test",
+    "seed": "node apps/api/seed.js",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  }
+}
+

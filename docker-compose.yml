@@ -1,0 +1,46 @@
+# ==============================================================================
+# QueueLess Docker Compose Configuration
+# DevOps Stack: Node.js 20 Express (Backend), Next.js 15 (Frontend)
+# Pure React & Node.js Architecture
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. BACKEND API SERVICE (Node.js & Express)
+  # Node.js 20 server with native WebSockets, JWT authentication,
+  # role-based access control, and real-time hospital queue management.
+  # ----------------------------------------------------------------------------
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: queueless-api
+    restart: unless-stopped
+    command: npm start
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      JWT_SECRET: your-super-secret-key-for-development
+      ADMIN_SECRET_KEY: super-secret-admin-key
+
+  # ----------------------------------------------------------------------------
+  # 2. FRONTEND APPLICATION (Next.js 15 & React)
+  # React 18, Tailwind CSS, TanStack Query, and Zustand client dashboard.
+  # Provides Admin, Doctor, Receptionist, and Patient interfaces.
+  # ----------------------------------------------------------------------------
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: queueless-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      NEXT_PUBLIC_WS_URL: ws://localhost:8000/ws/queue
+    depends_on:
+      - api
